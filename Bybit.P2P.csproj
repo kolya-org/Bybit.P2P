@@ -5,10 +5,16 @@
     <ImplicitUsings>disable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
-	<VersionPrefix>0.0.1</VersionPrefix>
+	<VersionPrefix>1.0.0</VersionPrefix>
 	<Authors>Nickolay "kolya5544" Kushnarenko</Authors>
 	<PackageLicenseExpression>MIT</PackageLicenseExpression>
 	<PackageReadmeFile>README.md</PackageReadmeFile>
+	<Description>An unofficial Bybit P2P API integration SDK written in C#.</Description>
+	<PackageProjectUrl>https://github.com/kolya5544/Bybit.P2P</PackageProjectUrl>
+	<PackageIcon>icon.png</PackageIcon>
+	<RepositoryUrl>https://github.com/kolya5544/Bybit.P2P</RepositoryUrl>
+	<RepositoryType>git</RepositoryType>
+	<PackageTags>p2p,bybit,api,sdk</PackageTags>
   </PropertyGroup>
 
   <ItemGroup>
@@ -22,6 +28,13 @@
 
 	<ItemGroup>
 	  <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <None Update="icon.png">
+	    <Pack>True</Pack>
+	    <PackagePath>\</PackagePath>
+	  </None>
 	</ItemGroup>
 
 </Project>

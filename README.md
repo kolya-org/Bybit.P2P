@@ -1,5 +1,5 @@
 # Bybit.P2P
-## An **unofficial** Bybit P2P API integration library written in C#.
+## An unofficial Bybit P2P API integration SDK written in C#.
 
 ![NuGet Version](https://img.shields.io/nuget/v/Bybit.P2P)
 
