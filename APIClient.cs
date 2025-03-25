@@ -2,12 +2,14 @@
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Net.Mime;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Schema;
 
 namespace Bybit.P2P
 {
@@ -76,6 +78,15 @@ namespace Bybit.P2P
             return RSA ? ComputeRSA(rawData) : ComputeHMAC(rawData);
         }
 
+        internal string GenerateBinarySign(long ts, byte[] input)
+        {
+            byte[] data = Encoding.UTF8.GetBytes(ts + API_KEY + RECV_WINDOW)
+                                       .Concat(input)
+                                       .ToArray();
+
+            return RSA ? ComputeRSA(data) : ComputeHMAC(data);
+        }
+
         internal static long UnixMS() => DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
 
         internal string ComputeHMAC(string data) => ComputeHMAC(Encoding.UTF8.GetBytes(data));
@@ -88,6 +99,11 @@ namespace Bybit.P2P
         }
 
         internal string ComputeRSA(string data)
+        {
+            throw new NotImplementedException();
+        }
+
+        internal string ComputeRSA(byte[] data)
         {
             throw new NotImplementedException();
         }
@@ -109,8 +125,6 @@ namespace Bybit.P2P
                 httpMsg.Content = new StringContent(jsonStr, Encoding.UTF8, "application/json");
 
                 PrepareMessage(httpMsg, ts, postSign);
-
-                
             } else if (method == HttpMethod.Get)
             {
                 var qs = MapOutAnObject(data);
@@ -122,7 +136,32 @@ namespace Bybit.P2P
                 PrepareMessage(httpMsg, ts, getSign);
             } else if (method == HttpMethod.Put)
             {
-                // TODO: FILE UPLOAD
+                string boundary = "boundary-for-file";
+                string mimeType = "image/png";
+
+                var multiform = new MultipartFormDataContent(boundary: boundary);
+
+                var values = data.GetType().GetProperties().ToDictionary(p => p.Name, p => p.GetValue(data));
+                var filepath = (string)values["upload_file"];
+                string filename = Path.GetFileName(filepath);
+
+                var fileContents = File.ReadAllBytes(filepath);
+                multiform.Add(new ByteArrayContent(fileContents), "upload_file", filename);
+
+                httpMsg = new HttpRequestMessage(HttpMethod.Post, $"{URL}{endpoint}");
+                httpMsg.Content = multiform;
+
+                byte[] payload = Encoding.UTF8.GetBytes(
+                    $"--{boundary}\r\n" +
+                    $"Content-Disposition: form-data; name=upload_file; filename={filename}; filename*=utf-8''{filename}\r\n\r\n"
+                )
+                .Concat(fileContents)
+                .Concat(Encoding.UTF8.GetBytes($"\r\n--{boundary}--\r\n"))
+                .ToArray();
+
+                var binarySign = GenerateBinarySign(ts, payload);
+
+                PrepareMessage(httpMsg, ts, binarySign);
             }
 
             resp = await client.SendAsync(httpMsg);

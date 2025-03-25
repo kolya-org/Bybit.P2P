@@ -83,10 +83,10 @@ Pretty(await p2p.GetChatMessages(new
 }));
 
 // 14. Upload Chat File
-await p2p.UploadChatFile(new
+Pretty(await p2p.UploadChatFile(new
 {
     upload_file = "F:/grub.png" // https://img.nk.ax/eLbPQWWRUWxKQbrQK.png
-});
+}));
 
 // 15. Send Chat Message
 await p2p.SendChatMessage(new

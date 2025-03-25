@@ -74,9 +74,9 @@ namespace Bybit.P2P
             return await api.SendRequest<GetChatMessagesResponse>(MethodList.GET_CHAT_MESSAGES, HttpMethod.Post, req);
         }
 
-        public static async Task UploadChatFile(this APIClient api, object? req = null)
+        public static async Task<UploadChatFileResponse> UploadChatFile(this APIClient api, object? req = null)
         {
-            throw new NotImplementedException();
+            return await api.SendRequest<UploadChatFileResponse>(MethodList.UPLOAD_CHAT_FILE, HttpMethod.Put, req);
         }
 
         public static async Task SendChatMessage(this APIClient api, object? req = null)
