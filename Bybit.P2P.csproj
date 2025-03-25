@@ -11,7 +11,12 @@
 	<PackageReadmeFile>README.md</PackageReadmeFile>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Compile Remove="examples\Quickstart.cs" />
+  </ItemGroup>
+
 	<ItemGroup>
+		<None Include="examples\Quickstart.cs" />
 		<None Include="README.md" Pack="true" PackagePath="\" />
 	</ItemGroup>
 

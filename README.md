@@ -46,8 +46,9 @@ using Bybit.P2P;
 Here is a quickstart example to get some info from the exchange:
 ```
 using Bybit.P2P;
+using Newtonsoft.Json;
 
-public static void Pretty(object obj) => Console.WriteLine(JsonConvert.SerializeObject(obj, Formatting.Indented));
+void Pretty(object obj) => Console.WriteLine(JsonConvert.SerializeObject(obj, Formatting.Indented));
 
 var p2p = new APIClient(
     apiKey: "x",
