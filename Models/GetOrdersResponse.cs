@@ -86,6 +86,18 @@ namespace Bybit.P2P.Models
 
             [JsonProperty("bulkOrderFlag")]
             public bool BulkOrderFlag { get; set; }
+
+            [JsonProperty("targetUserMaskId")]
+            public string TargetUserMaskId { get; set; }
+
+            [JsonProperty("loginUserMaskId")]
+            public string LoginUserMaskId { get; set; }
+
+            [JsonProperty("verificationOrderLastSeconds")]
+            public string VerificationOrderLastSeconds { get; set; }
+
+            [JsonProperty("verificationOrder")]
+            public bool VerificationOrder { get; set; }
         }
 
         public partial class Extension
