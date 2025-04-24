@@ -1,7 +1,6 @@
-﻿using Newtonsoft.Json;
-using System;
+﻿using Bybit.P2P.Models.Shared;
+using Newtonsoft.Json;
 using System.Collections.Generic;
-using System.Text;
 
 namespace Bybit.P2P.Models
 {
@@ -87,44 +86,20 @@ namespace Bybit.P2P.Models
             [JsonProperty("bulkOrderFlag")]
             public bool BulkOrderFlag { get; set; }
 
-            [JsonProperty("targetUserMaskId")]
-            public string TargetUserMaskId { get; set; }
-
             [JsonProperty("loginUserMaskId")]
             public string LoginUserMaskId { get; set; }
+
+            [JsonProperty("targetUserMaskId")]
+            public string TargetUserMaskId { get; set; }
 
             [JsonProperty("verificationOrderLastSeconds")]
             public string VerificationOrderLastSeconds { get; set; }
 
             [JsonProperty("verificationOrder")]
             public bool VerificationOrder { get; set; }
-        }
 
-        public partial class Extension
-        {
-            [JsonProperty("isDelayWithdraw")]
-            public bool IsDelayWithdraw { get; set; }
-
-            [JsonProperty("delayTime")]
-            public string DelayTime { get; set; }
-
-            [JsonProperty("startTime")]
-            public string StartTime { get; set; }
-        }
-
-        public partial class JudgeInfo
-        {
-            [JsonProperty("autoJudgeUnlockTime")]
-            public string AutoJudgeUnlockTime { get; set; }
-
-            [JsonProperty("dissentResult")]
-            public string DissentResult { get; set; }
-
-            [JsonProperty("preDissent")]
-            public string PreDissent { get; set; }
-
-            [JsonProperty("postDissent")]
-            public string PostDissent { get; set; }
+            [JsonProperty("proofDownloadFlag")]
+            public bool ProofDownloadFlag { get; set; }
         }
     }
 }

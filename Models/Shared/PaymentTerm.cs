@@ -1,11 +1,8 @@
 ﻿using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
-namespace Bybit.P2P.Models
+namespace Bybit.P2P.Models.Shared
 {
-    public class GetUserPaymentTypesResponse
+    public partial class PaymentTerm
     {
         [JsonProperty("id")]
         public string Id { get; set; }
@@ -61,9 +58,6 @@ namespace Bybit.P2P.Models
         [JsonProperty("online")]
         public string Online { get; set; }
 
-        [JsonProperty("countNo")]
-        public string CountNo { get; set; }
-
         [JsonProperty("paymentExt1")]
         public string PaymentExt1 { get; set; }
 
@@ -85,70 +79,13 @@ namespace Bybit.P2P.Models
         [JsonProperty("paymentTemplateVersion")]
         public long PaymentTemplateVersion { get; set; }
 
-        [JsonProperty("hasPaymentTemplateChanged")]
-        public bool HasPaymentTemplateChanged { get; set; }
-
         [JsonProperty("paymentConfigVo")]
-        public PaymentConfigVoClass PaymentConfigVo { get; set; }
+        public PaymentTermConfig PaymentConfig { get; set; }
+
+        [JsonProperty("ruPaymentPrompt")]
+        public bool RuPaymentPrompt { get; set; }
 
         [JsonProperty("realNameVerified")]
         public bool RealNameVerified { get; set; }
-
-        [JsonProperty("channel")]
-        public string Channel { get; set; }
-
-        [JsonProperty("currencyBalance")]
-        public List<string> CurrencyBalance { get; set; }
-
-        public partial class PaymentConfigVoClass
-        {
-            [JsonProperty("paymentType")]
-            public string PaymentType { get; set; }
-
-            [JsonProperty("checkType")]
-            public long CheckType { get; set; }
-
-            [JsonProperty("sort")]
-            public long Sort { get; set; }
-
-            [JsonProperty("paymentName")]
-            public string PaymentName { get; set; }
-
-            [JsonProperty("addTips")]
-            public string AddTips { get; set; }
-
-            [JsonProperty("itemTips")]
-            public string ItemTips { get; set; }
-
-            [JsonProperty("online")]
-            public long Online { get; set; }
-
-            [JsonProperty("items")]
-            public List<Item> Items { get; set; }
-        }
-
-        public partial class Item
-        {
-            [JsonProperty("view")]
-            public bool View { get; set; }
-
-            [JsonProperty("name")]
-            public string Name { get; set; }
-
-            [JsonProperty("label")]
-            public string Label { get; set; }
-
-            [JsonProperty("placeholder")]
-            public string Placeholder { get; set; }
-
-            [JsonProperty("type")]
-            public string Type { get; set; }
-
-            [JsonProperty("maxLength")]
-            public string MaxLength { get; set; }
-
-            [JsonProperty("required")]
-            public bool ItemRequired { get; set; }
-        }
     }
 }

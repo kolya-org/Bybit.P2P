@@ -1,8 +1,7 @@
 ﻿using Bybit.P2P.Models;
-using System;
+using Bybit.P2P.Models.Shared;
 using System.Collections.Generic;
 using System.Net.Http;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Bybit.P2P
@@ -24,14 +23,14 @@ namespace Bybit.P2P
             return await api.SendRequest<GetAdsListResponse>(MethodList.GET_ADS_LIST, HttpMethod.Post, req);
         }
 
-        public static async Task<GetAdDetailsResponse> GetAdDetails(this APIClient api, object? req = null)
+        public static async Task<Advertisement> GetAdDetails(this APIClient api, object? req = null)
         {
-            return await api.SendRequest<GetAdDetailsResponse>(MethodList.GET_AD_DETAILS, HttpMethod.Post, req);
+            return await api.SendRequest<Advertisement>(MethodList.GET_AD_DETAILS, HttpMethod.Post, req);
         }
 
-        public static async Task<UpdateAdResponse> UpdateAd(this APIClient api, object? req = null)
+        public static async Task<Generic2FA> UpdateAd(this APIClient api, object? req = null)
         {
-            return await api.SendRequest<UpdateAdResponse>(MethodList.UPDATE_AD, HttpMethod.Post, req);
+            return await api.SendRequest<Generic2FA>(MethodList.UPDATE_AD, HttpMethod.Post, req);
         }
 
         public static async Task RemoveAd(this APIClient api, object? req = null)
@@ -49,9 +48,9 @@ namespace Bybit.P2P
             return await api.SendRequest<GetOrdersResponse>(MethodList.GET_PENDING_ORDERS, HttpMethod.Post, req);
         }
 
-        public static async Task<GetCounterpartyInfoResponse> GetCounterpartyInfo(this APIClient api, object? req = null)
+        public static async Task<UserInfo> GetCounterpartyInfo(this APIClient api, object? req = null)
         {
-            return await api.SendRequest<GetCounterpartyInfoResponse>(MethodList.GET_COUNTERPARTY_INFO, HttpMethod.Post, req);
+            return await api.SendRequest<UserInfo>(MethodList.GET_COUNTERPARTY_INFO, HttpMethod.Post, req);
         }
 
         public static async Task<GetOrderDetailsResponse> GetOrderDetails(this APIClient api, object? req = null)
@@ -84,9 +83,9 @@ namespace Bybit.P2P
             await api.SendRequest<object>(MethodList.SEND_CHAT_MESSAGE, HttpMethod.Post, req);
         }
 
-        public static async Task<PostNewAdResponse> PostNewAd(this APIClient api, object? req = null)
+        public static async Task<Generic2FA> PostNewAd(this APIClient api, object? req = null)
         {
-            return await api.SendRequest<PostNewAdResponse>(MethodList.POST_NEW_AD, HttpMethod.Post, req);
+            return await api.SendRequest<Generic2FA>(MethodList.POST_NEW_AD, HttpMethod.Post, req);
         }
 
         public static async Task<GetOnlineAdsResponse> GetOnlineAds(this APIClient api, object? req = null)
@@ -94,9 +93,9 @@ namespace Bybit.P2P
             return await api.SendRequest<GetOnlineAdsResponse>(MethodList.GET_ONLINE_ADS, HttpMethod.Post, req);
         }
 
-        public static async Task<List<GetUserPaymentTypesResponse>> GetUserPaymentTypes(this APIClient api, object? req = null)
+        public static async Task<List<PaymentTerm>> GetUserPaymentTypes(this APIClient api, object? req = null)
         {
-            return await api.SendRequest<List<GetUserPaymentTypesResponse>>(MethodList.GET_USER_PAYMENT_TYPES, HttpMethod.Post, req);
+            return await api.SendRequest<List<PaymentTerm>>(MethodList.GET_USER_PAYMENT_TYPES, HttpMethod.Post, req);
         }
     }
 }

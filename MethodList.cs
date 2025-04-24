@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Bybit.P2P
+﻿namespace Bybit.P2P
 {
     internal class MethodList
     {

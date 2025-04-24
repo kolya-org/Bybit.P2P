@@ -1,11 +1,9 @@
 ﻿using Newtonsoft.Json;
-using System;
 using System.Collections.Generic;
-using System.Text;
 
-namespace Bybit.P2P.Models
+namespace Bybit.P2P.Models.Shared
 {
-    public class GetCounterpartyInfoResponse
+    public class UserInfo
     {
         [JsonProperty("nickName")]
         public string NickName { get; set; }
@@ -116,10 +114,10 @@ namespace Bybit.P2P.Models
         public long VipLevel { get; set; }
 
         [JsonProperty("vipProfit")]
-        public List<object> VipProfit { get; set; }
+        public List<string> VipProfit { get; set; }
 
         [JsonProperty("userTag")]
-        public List<object> UserTag { get; set; }
+        public List<string> UserTag { get; set; }
 
         [JsonProperty("userCancelCountLimit")]
         public long UserCancelCountLimit { get; set; }
@@ -150,5 +148,8 @@ namespace Bybit.P2P.Models
 
         [JsonProperty("openApiSwitch")]
         public long OpenApiSwitch { get; set; }
+
+        [JsonProperty("last30TradeCurrency")]
+        public string Last30TradeCurrency { get; set; }
     }
 }

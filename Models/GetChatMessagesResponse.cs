@@ -1,7 +1,5 @@
 ﻿using Newtonsoft.Json;
-using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace Bybit.P2P.Models
 {
@@ -9,6 +7,21 @@ namespace Bybit.P2P.Models
     {
         [JsonProperty("result")]
         public List<MessageClass> Messages { get; set; }
+
+        [JsonProperty("totalRows")]
+        public string TotalRows { get; set; }
+
+        [JsonProperty("totalPages")]
+        public string TotalPages { get; set; }
+
+        [JsonProperty("currentPage")]
+        public string CurrentPage { get; set; }
+
+        [JsonProperty("dayLimit")]
+        public string DayLimit { get; set; }
+
+        [JsonProperty("showDayLimit")]
+        public bool ShowDayLimit { get; set; }
 
         public class MessageClass
         {

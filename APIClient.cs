@@ -1,15 +1,13 @@
-﻿using Bybit.P2P.Models;
+﻿using Bybit.P2P.Models.Shared;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net.Http;
-using System.Net.Mime;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
-using System.Xml.Schema;
 
 namespace Bybit.P2P
 {
@@ -125,7 +123,8 @@ namespace Bybit.P2P
                 httpMsg.Content = new StringContent(jsonStr, Encoding.UTF8, "application/json");
 
                 PrepareMessage(httpMsg, ts, postSign);
-            } else if (method == HttpMethod.Get)
+            }
+            else if (method == HttpMethod.Get)
             {
                 var qs = MapOutAnObject(data);
                 var getSign = GenerateSign(ts, qs);
@@ -134,7 +133,8 @@ namespace Bybit.P2P
                 httpMsg = new HttpRequestMessage(method, $"{URL}{endpoint}{needsQuestionMark}{qs}");
 
                 PrepareMessage(httpMsg, ts, getSign);
-            } else if (method == HttpMethod.Put)
+            }
+            else if (method == HttpMethod.Put)
             {
                 string boundary = "boundary-for-file";
                 string mimeType = "image/png";

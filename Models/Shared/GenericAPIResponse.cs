@@ -1,9 +1,6 @@
 ﻿using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
-namespace Bybit.P2P.Models
+namespace Bybit.P2P.Models.Shared
 {
     public class GenericAPIResponse
     {

@@ -1,7 +1,5 @@
 ﻿using Newtonsoft.Json;
-using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace Bybit.P2P.Models
 {
@@ -150,6 +148,9 @@ namespace Bybit.P2P.Models
 
         [JsonProperty("openApiSwitch")]
         public long OpenApiSwitch { get; set; }
+
+        [JsonProperty("last30TradeCurrency")]
+        public string Last30TradeCurrency { get; set; }
 
         public partial class CurPrivilegeInfoClass
         {

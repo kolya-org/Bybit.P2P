@@ -5,7 +5,7 @@
     <ImplicitUsings>disable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
-	<VersionPrefix>1.1.0</VersionPrefix>
+	<VersionPrefix>1.2.0</VersionPrefix>
 	<Authors>Nickolay "kolya5544" Kushnarenko</Authors>
 	<PackageLicenseExpression>MIT</PackageLicenseExpression>
 	<PackageReadmeFile>README.md</PackageReadmeFile>
@@ -22,7 +22,6 @@
   </ItemGroup>
 
 	<ItemGroup>
-		<None Include="examples\Quickstart.cs" />
 		<None Include="README.md" Pack="true" PackagePath="\" />
 	</ItemGroup>
 
@@ -35,6 +34,10 @@
 	    <Pack>True</Pack>
 	    <PackagePath>\</PackagePath>
 	  </None>
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Folder Include="examples\" />
 	</ItemGroup>
 
 </Project>

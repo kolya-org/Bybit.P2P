@@ -1,7 +1,6 @@
-﻿using Newtonsoft.Json;
-using System;
+﻿using Bybit.P2P.Models.Shared;
+using Newtonsoft.Json;
 using System.Collections.Generic;
-using System.Text;
 
 namespace Bybit.P2P.Models
 {
@@ -92,7 +91,7 @@ namespace Bybit.P2P.Models
         public string CreateDate { get; set; }
 
         [JsonProperty("paymentTermList")]
-        public List<ConfirmedPayTermClass> PaymentTermList { get; set; }
+        public List<PaymentTerm> PaymentTermList { get; set; }
 
         [JsonProperty("remark")]
         public string Remark { get; set; }
@@ -128,13 +127,13 @@ namespace Bybit.P2P.Models
         public string AppealedTimes { get; set; }
 
         [JsonProperty("paymentTermResult")]
-        public ConfirmedPayTermClass PaymentTermResult { get; set; }
+        public PaymentTerm PaymentTermResult { get; set; }
 
         [JsonProperty("orderFinishMinute")]
         public long OrderFinishMinute { get; set; }
 
         [JsonProperty("confirmedPayTerm")]
-        public ConfirmedPayTermClass ConfirmedPayTerm { get; set; }
+        public PaymentTerm ConfirmedPayTerm { get; set; }
 
         [JsonProperty("makerFee")]
         public string MakerFee { get; set; }
@@ -164,7 +163,7 @@ namespace Bybit.P2P.Models
         public string UpdateDate { get; set; }
 
         [JsonProperty("extension")]
-        public ExtensionClass Extension { get; set; }
+        public Extension Extension { get; set; }
 
         [JsonProperty("selfUnreadMsgCount")]
         public string SelfUnreadMsgCount { get; set; }
@@ -188,7 +187,7 @@ namespace Bybit.P2P.Models
         public string AppraiseStatus { get; set; }
 
         [JsonProperty("appraiseInfo")]
-        public AppraiseInfoClass AppraiseInfo { get; set; }
+        public AppraiseInfo AppraiseInfo { get; set; }
 
         [JsonProperty("canReportDisagreeTypes")]
         public List<object> CanReportDisagreeTypes { get; set; }
@@ -299,7 +298,7 @@ namespace Bybit.P2P.Models
         public long AppealVersion { get; set; }
 
         [JsonProperty("judgeInfo")]
-        public JudgeInfoClass JudgeInfo { get; set; }
+        public JudgeInfo JudgeInfo { get; set; }
 
         [JsonProperty("helpType")]
         public string HelpType { get; set; }
@@ -317,7 +316,7 @@ namespace Bybit.P2P.Models
         public string TargetUserType { get; set; }
 
         [JsonProperty("targetUserDisplays")]
-        public List<string> TargetUserDisplays { get; set; }
+        public List<object> TargetUserDisplays { get; set; }
 
         [JsonProperty("appealProcessChangeFlag")]
         public bool AppealProcessChangeFlag { get; set; }
@@ -325,163 +324,25 @@ namespace Bybit.P2P.Models
         [JsonProperty("appealNegotiationNode")]
         public long AppealNegotiationNode { get; set; }
 
-        public partial class AppraiseInfoClass
-        {
-            [JsonProperty("anonymous")]
-            public string Anonymous { get; set; }
+        [JsonProperty("loginUserMaskId")]
+        public string LoginUserMaskId { get; set; }
 
-            [JsonProperty("appraiseContent")]
-            public string AppraiseContent { get; set; }
+        [JsonProperty("targetUserMaskId")]
+        public string TargetUserMaskId { get; set; }
 
-            [JsonProperty("appraiseId")]
-            public string AppraiseId { get; set; }
+        [JsonProperty("appraiseShow")]
+        public List<AppraiseShow> AppraiseShow { get; set; }
 
-            [JsonProperty("appraiseType")]
-            public string AppraiseType { get; set; }
+        [JsonProperty("showPaymentList")]
+        public bool ShowPaymentList { get; set; }
 
-            [JsonProperty("modifyFlag")]
-            public string ModifyFlag { get; set; }
+        [JsonProperty("verificationOrderLastSeconds")]
+        public string VerificationOrderLastSeconds { get; set; }
 
-            [JsonProperty("updateDate")]
-            public string UpdateDate { get; set; }
-        }
+        [JsonProperty("verificationOrder")]
+        public bool VerificationOrder { get; set; }
 
-        public partial class ConfirmedPayTermClass
-        {
-            [JsonProperty("id")]
-            public string Id { get; set; }
-
-            [JsonProperty("realName")]
-            public string RealName { get; set; }
-
-            [JsonProperty("paymentType")]
-            public long PaymentType { get; set; }
-
-            [JsonProperty("bankName")]
-            public string BankName { get; set; }
-
-            [JsonProperty("branchName")]
-            public string BranchName { get; set; }
-
-            [JsonProperty("accountNo")]
-            public string AccountNo { get; set; }
-
-            [JsonProperty("qrcode")]
-            public string Qrcode { get; set; }
-
-            [JsonProperty("visible")]
-            public long Visible { get; set; }
-
-            [JsonProperty("payMessage")]
-            public string PayMessage { get; set; }
-
-            [JsonProperty("firstName")]
-            public string FirstName { get; set; }
-
-            [JsonProperty("lastName")]
-            public string LastName { get; set; }
-
-            [JsonProperty("secondLastName")]
-            public string SecondLastName { get; set; }
-
-            [JsonProperty("clabe")]
-            public string Clabe { get; set; }
-
-            [JsonProperty("debitCardNumber")]
-            public string DebitCardNumber { get; set; }
-
-            [JsonProperty("mobile")]
-            public string Mobile { get; set; }
-
-            [JsonProperty("businessName")]
-            public string BusinessName { get; set; }
-
-            [JsonProperty("concept")]
-            public string Concept { get; set; }
-
-            [JsonProperty("online")]
-            public string Online { get; set; }
-
-            [JsonProperty("paymentExt1")]
-            public string PaymentExt1 { get; set; }
-
-            [JsonProperty("paymentExt2")]
-            public string PaymentExt2 { get; set; }
-
-            [JsonProperty("paymentExt3")]
-            public string PaymentExt3 { get; set; }
-
-            [JsonProperty("paymentExt4")]
-            public string PaymentExt4 { get; set; }
-
-            [JsonProperty("paymentExt5")]
-            public string PaymentExt5 { get; set; }
-
-            [JsonProperty("paymentExt6")]
-            public string PaymentExt6 { get; set; }
-
-            [JsonProperty("paymentTemplateVersion")]
-            public long PaymentTemplateVersion { get; set; }
-
-            [JsonProperty("paymentConfigVo")]
-            public PaymentConfigVo PaymentConfigVo { get; set; }
-
-            [JsonProperty("ruPaymentPrompt")]
-            public bool RuPaymentPrompt { get; set; }
-        }
-
-        public partial class PaymentConfigVo
-        {
-            [JsonProperty("paymentType")]
-            public string PaymentType { get; set; }
-
-            [JsonProperty("checkType")]
-            public long CheckType { get; set; }
-
-            [JsonProperty("sort")]
-            public long Sort { get; set; }
-
-            [JsonProperty("paymentName")]
-            public string PaymentName { get; set; }
-
-            [JsonProperty("addTips")]
-            public string AddTips { get; set; }
-
-            [JsonProperty("itemTips")]
-            public string ItemTips { get; set; }
-
-            [JsonProperty("online")]
-            public long Online { get; set; }
-
-            [JsonProperty("items")]
-            public List<object> Items { get; set; }
-        }
-
-        public partial class ExtensionClass
-        {
-            [JsonProperty("isDelayWithdraw")]
-            public bool IsDelayWithdraw { get; set; }
-
-            [JsonProperty("delayTime")]
-            public string DelayTime { get; set; }
-
-            [JsonProperty("startTime")]
-            public string StartTime { get; set; }
-        }
-
-        public partial class JudgeInfoClass
-        {
-            [JsonProperty("autoJudgeUnlockTime")]
-            public string AutoJudgeUnlockTime { get; set; }
-
-            [JsonProperty("dissentResult")]
-            public string DissentResult { get; set; }
-
-            [JsonProperty("preDissent")]
-            public string PreDissent { get; set; }
-
-            [JsonProperty("postDissent")]
-            public string PostDissent { get; set; }
-        }
+        [JsonProperty("proofDownloadFlag")]
+        public bool ProofDownloadFlag { get; set; }
     }
 }

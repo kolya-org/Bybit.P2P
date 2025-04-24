@@ -1,5 +1,6 @@
 ﻿using Bybit.P2P;
 using Newtonsoft.Json;
+using System;
 
 void Pretty(object obj) => Console.WriteLine(JsonConvert.SerializeObject(obj, Formatting.Indented));
 
@@ -22,7 +23,8 @@ Pretty(await p2p.GetAdsList());
 Pretty(await p2p.GetAdDetails(new { itemId = "1234567890123456789" }));
 
 // 5. Update/reOnline ads
-Pretty(await p2p.UpdateAd(new {
+Pretty(await p2p.UpdateAd(new
+{
     id = "1234567890123456789",
     priceType = "0",
     premium = "90",
@@ -30,7 +32,8 @@ Pretty(await p2p.UpdateAd(new {
     minAmount = "500",
     maxAmount = "3500000",
     remark = "Contact @kolya5544 on Telegram once you've paid..",
-    tradingPreferenceSet = new {
+    tradingPreferenceSet = new
+    {
         hasUnPostAd = "0",
         isKyc = "1",
         isEmail = "0",
@@ -60,7 +63,8 @@ Pretty(await p2p.GetOrders(new { page = 1, size = 10 }));
 Pretty(await p2p.GetPendingOrders(new { page = 1, size = 10 }));
 
 // 9. Get Counterparty Info
-Pretty(await p2p.GetCounterpartyInfo(new {
+Pretty(await p2p.GetCounterpartyInfo(new
+{
     originalUid = "118027304",
     orderId = "1234567890123456789"
 }));
