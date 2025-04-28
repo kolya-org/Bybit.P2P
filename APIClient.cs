@@ -109,74 +109,105 @@ namespace Bybit.P2P
         internal async Task<T> SendRequest<T>(string endpoint, HttpMethod method, object? data)
         {
             var ts = UnixMS();
-
-            HttpResponseMessage? resp = null;
-            HttpRequestMessage? httpMsg = null;
+            HttpRequestMessage httpMsg;
 
             if (method == HttpMethod.Post)
             {
-                httpMsg = new HttpRequestMessage(method, $"{URL}{endpoint}");
-
-                var jsonStr = JsonConvert.SerializeObject(data);
-                var postSign = GenerateSign(ts, jsonStr);
-
-                httpMsg.Content = new StringContent(jsonStr, Encoding.UTF8, "application/json");
-
-                PrepareMessage(httpMsg, ts, postSign);
+                httpMsg = PreparePostRequest(endpoint, data, ts);
             }
             else if (method == HttpMethod.Get)
             {
-                var qs = MapOutAnObject(data);
-                var getSign = GenerateSign(ts, qs);
-                var needsQuestionMark = qs.Length > 0 ? "?" : "";
-
-                httpMsg = new HttpRequestMessage(method, $"{URL}{endpoint}{needsQuestionMark}{qs}");
-
-                PrepareMessage(httpMsg, ts, getSign);
+                httpMsg = PrepareGetRequest(endpoint, data, ts);
             }
             else if (method == HttpMethod.Put)
             {
-                string boundary = "boundary-for-file";
-                string mimeType = "image/png";
-
-                var multiform = new MultipartFormDataContent(boundary: boundary);
-
-                var values = data.GetType().GetProperties().ToDictionary(p => p.Name, p => p.GetValue(data));
-                var filepath = (string)values["upload_file"];
-                string filename = Path.GetFileName(filepath);
-
-                var fileContents = File.ReadAllBytes(filepath);
-                multiform.Add(new ByteArrayContent(fileContents), "upload_file", filename);
-
-                httpMsg = new HttpRequestMessage(HttpMethod.Post, $"{URL}{endpoint}");
-                httpMsg.Content = multiform;
-
-                byte[] payload = Encoding.UTF8.GetBytes(
-                    $"--{boundary}\r\n" +
-                    $"Content-Disposition: form-data; name=upload_file; filename={filename}; filename*=utf-8''{filename}\r\n\r\n"
-                )
-                .Concat(fileContents)
-                .Concat(Encoding.UTF8.GetBytes($"\r\n--{boundary}--\r\n"))
-                .ToArray();
-
-                var binarySign = GenerateBinarySign(ts, payload);
-
-                PrepareMessage(httpMsg, ts, binarySign);
+                httpMsg = PreparePutRequest(endpoint, data, ts);
             }
-
-            resp = await client.SendAsync(httpMsg);
-
-            var statusCode = resp.StatusCode;
-            if (statusCode != System.Net.HttpStatusCode.OK)
+            else
             {
-                throw new Exception($"Request failed with status code {statusCode}");
+                throw new NotSupportedException($"HTTP method {method} is not supported");
             }
 
-            // parse response
+            var resp = await client.SendAsync(httpMsg);
+            await EnsureSuccessStatusCode(resp);
+
             var respJsonStr = await resp.Content.ReadAsStringAsync();
             var respObject = JsonConvert.DeserializeObject<GenericAPIResponse>(respJsonStr);
 
-            // check for errors
+            ValidateApiResponse(respObject);
+
+            return JsonConvert.DeserializeObject<T>(JsonConvert.SerializeObject(respObject.Result));
+        }
+
+        private HttpRequestMessage PreparePostRequest(string endpoint, object? data, long ts)
+        {
+            var jsonStr = JsonConvert.SerializeObject(data);
+            var postSign = GenerateSign(ts, jsonStr);
+
+            var httpMsg = new HttpRequestMessage(HttpMethod.Post, $"{URL}{endpoint}")
+            {
+                Content = new StringContent(jsonStr, Encoding.UTF8, "application/json")
+            };
+
+            PrepareMessage(httpMsg, ts, postSign);
+            return httpMsg;
+        }
+
+        private HttpRequestMessage PrepareGetRequest(string endpoint, object? data, long ts)
+        {
+            var qs = MapOutAnObject(data);
+            var getSign = GenerateSign(ts, qs);
+            var needsQuestionMark = qs.Length > 0 ? "?" : "";
+
+            var httpMsg = new HttpRequestMessage(HttpMethod.Get, $"{URL}{endpoint}{needsQuestionMark}{qs}");
+            PrepareMessage(httpMsg, ts, getSign);
+            return httpMsg;
+        }
+
+        private HttpRequestMessage PreparePutRequest(string endpoint, object? data, long ts)
+        {
+            const string boundary = "boundary-for-file";
+            var multiform = new MultipartFormDataContent(boundary);
+
+            var values = data.GetType().GetProperties().ToDictionary(p => p.Name, p => p.GetValue(data));
+            var filepath = (string)values["upload_file"];
+            var filename = Path.GetFileName(filepath);
+
+            var fileContents = File.ReadAllBytes(filepath);
+            multiform.Add(new ByteArrayContent(fileContents), "upload_file", filename);
+
+            var httpMsg = new HttpRequestMessage(HttpMethod.Post, $"{URL}{endpoint}")
+            {
+                Content = multiform
+            };
+
+            byte[] payload = BuildMultipartPayload(boundary, filename, fileContents);
+            var binarySign = GenerateBinarySign(ts, payload);
+
+            PrepareMessage(httpMsg, ts, binarySign);
+            return httpMsg;
+        }
+
+        private byte[] BuildMultipartPayload(string boundary, string filename, byte[] fileContents)
+        {
+            return Encoding.UTF8.GetBytes(
+                    $"--{boundary}\r\n" +
+                    $"Content-Disposition: form-data; name=upload_file; filename={filename}; filename*=utf-8''{filename}\r\n\r\n")
+                .Concat(fileContents)
+                .Concat(Encoding.UTF8.GetBytes($"\r\n--{boundary}--\r\n"))
+                .ToArray();
+        }
+
+        private async Task EnsureSuccessStatusCode(HttpResponseMessage resp)
+        {
+            if (resp.StatusCode != System.Net.HttpStatusCode.OK)
+            {
+                throw new Exception($"Request failed with status code {resp.StatusCode}");
+            }
+        }
+
+        private void ValidateApiResponse(GenericAPIResponse respObject)
+        {
             var retCode = respObject.RetCode ?? respObject.RetCodeAlternative;
             var retMsg = respObject.RetMsg ?? respObject.RetMsgAlternative;
 
@@ -184,19 +215,16 @@ namespace Bybit.P2P
             {
                 throw new Exception($"API Error: {retMsg} (ErrCode: {retCode})");
             }
-
-            // re-parse actual result
-            return JsonConvert.DeserializeObject<T>(JsonConvert.SerializeObject(respObject.Result));
         }
 
         private void PrepareMessage(HttpRequestMessage httpMsg, long ts, string sign)
         {
-            // add all the required fields
             httpMsg.Headers.Add("X-BAPI-API-KEY", API_KEY);
             httpMsg.Headers.Add("X-BAPI-SIGN", sign);
             httpMsg.Headers.Add("X-BAPI-SIGN-TYPE", "2");
             httpMsg.Headers.Add("X-BAPI-TIMESTAMP", ts.ToString());
             httpMsg.Headers.Add("X-BAPI-RECV-WINDOW", RECV_WINDOW.ToString());
         }
+
     }
 }
